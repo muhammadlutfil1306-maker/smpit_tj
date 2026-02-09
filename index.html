@@ -3,328 +3,253 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Segera Hadir | Enterprise Solution</title>
+    <title>Coming Soon | Enterprise Mode</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@1,400;1,600&display=swap" rel="stylesheet">
 
     <style>
-        /* --- VARIABEL & RESET --- */
         :root {
-            /* Palette Biru Premium */
-            --color-bg-dark: #0B1120;       /* Deep Navy (Base Color) */
-            --color-bg-blue-premium: #1e40af; /* Premium Blue untuk gradasi */
-            --color-accent: #3B82F6;        /* Bright Royal Blue */
-            --color-text-main: #F8FAFC;     /* Off-white */
-            --color-text-muted: #94A3B8;    /* Greyish blue */
-            
+            --color-bg-dark: #0B1120;
+            --color-accent: #3B82F6;
+            --color-text-main: #F8FAFC;
+            --color-text-muted: #64748B;
             --font-main: 'Inter', sans-serif;
-            --max-width: 1280px;
+            --font-math: 'Crimson Pro', serif;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: var(--font-main);
-            /* LAYER 1: Warna Dasar Paling Belakang */
             background-color: var(--color-bg-dark);
             color: var(--color-text-main);
-            line-height: 1.6;
-            min-height: 100vh;
+            height: 100vh;
+            overflow: hidden; /* Mencegah scroll */
             display: flex;
             flex-direction: column;
-            overflow-x: hidden;
             position: relative;
         }
 
-        /* --- BACKGROUND SYSTEM --- */
-        
-        /* LAYER 2: Canvas Gelombang Trigonometri */
+        /* --- BACKGROUND LAYERS --- */
         #waveCanvas {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            /* Z-index 0 menempatkannya di atas body, tapi di bawah overlay */
-            z-index: 0; 
-            opacity: 0.5; /* Disesuaikan agar menyatu dengan gradasi baru */
-            pointer-events: none;
-            mix-blend-mode: screen; /* Membuat gelombang "menyala" di atas latar gelap */
+            inset: 0;
+            z-index: 0;
+            opacity: 0.6;
+            mix-blend-mode: screen;
         }
 
-        /* LAYER 3: Premium Gradient Overlay */
         .bg-overlay {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            /* Gradasi Premium Blue ke Dark, Menghilangkan efek lingkaran pusing */
-            background: linear-gradient(to bottom right, rgba(30, 64, 175, 0.8) 0%, rgba(11, 17, 32, 0.95) 70%);
-            /* Z-index 1 menempatkannya di ATAS kanvas gelombang */
+            inset: 0;
+            background: linear-gradient(135deg, rgba(30, 58, 138, 0.4) 0%, #0B1120 80%);
             z-index: 1;
-            pointer-events: none;
         }
 
-        /* --- LAYOUT UTAMA --- */
-        /* LAYER 4: Konten */
+        /* --- CONTENT CONTAINER --- */
         .container {
-            width: 100%;
-            max-width: var(--max-width);
-            margin: 0 auto;
-            padding: 0 2rem;
             position: relative;
-            /* Z-index 2 memastikan konten di atas segalanya */
-            z-index: 2; 
+            z-index: 10;
             flex: 1;
             display: flex;
             flex-direction: column;
             justify-content: center;
-        }
-
-        /* --- HEADER --- */
-        header {
-            padding: 2rem 0;
-            display: flex;
             align-items: center;
+            text-align: center;
+            padding: 2rem;
         }
 
-        .logo-icon {
-            width: 32px;
-            height: 32px;
-            background: linear-gradient(135deg, var(--color-accent), #1E40AF);
-            border-radius: 6px;
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-        }
-
-        /* --- HERO SECTION --- */
-        .hero {
-            display: grid;
-            grid-template-columns: 1.1fr 0.9fr;
-            gap: 4rem;
-            align-items: center;
-            padding: 4rem 0;
-        }
-
-        .hero-content {
-            max-width: 600px;
-        }
-
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            padding: 0.5rem 1rem;
-            background: rgba(30, 58, 138, 0.3);
+        /* --- TYPOGRAPHY --- */
+        .brand-pill {
+            margin-bottom: 2rem;
+            padding: 6px 16px;
+            background: rgba(59, 130, 246, 0.1);
             border: 1px solid rgba(59, 130, 246, 0.3);
-            border-radius: 9999px;
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: #93C5FD;
-            margin-bottom: 1.5rem;
-            backdrop-filter: blur(8px);
-        }
-        
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            background-color: #60A5FA;
-            border-radius: 50%;
-            margin-right: 8px;
-            box-shadow: 0 0 8px #60A5FA;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.5; }
-            100% { opacity: 1; }
-        }
-
-        h1 {
-            font-size: 3.5rem;
-            line-height: 1.1;
-            font-weight: 700;
-            letter-spacing: -0.03em;
-            margin-bottom: 1.5rem;
-            color: #ffffff;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        }
-
-        p.lead {
-            font-size: 1.125rem;
-            color: var(--color-text-muted);
-            margin-bottom: 2.5rem;
-            font-weight: 300;
-            max-width: 90%;
-        }
-
-        /* --- FORMULIR --- */
-        .notify-form {
-            display: flex;
-            gap: 1rem;
-            max-width: 480px;
-        }
-
-        .input-group {
-            flex: 1;
-        }
-
-        input[type="email"] {
-            width: 100%;
-            padding: 1rem 1.25rem;
-            background: rgba(11, 17, 32, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 8px;
-            color: white;
-            font-family: var(--font-main);
-            font-size: 1rem;
-            transition: all 0.3s ease;
+            border-radius: 100px;
+            color: #60A5FA;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
             backdrop-filter: blur(4px);
         }
 
-        input[type="email"]:focus {
-            outline: none;
-            border-color: var(--color-accent);
-            background: rgba(11, 17, 32, 0.8);
-            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
+        h1 {
+            font-size: 5rem; /* Ukuran Jumbo */
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            line-height: 1;
+            margin-bottom: 3rem;
+            background: linear-gradient(to bottom, #FFFFFF 0%, #93C5FD 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 30px rgba(59, 130, 246, 0.2));
         }
 
-        button.btn-primary {
-            padding: 0 2rem;
-            background: linear-gradient(180deg, #3B82F6 0%, #2563EB 100%);
-            color: white;
-            border: 1px solid #2563EB;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            white-space: nowrap;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-
-        button.btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.4);
-        }
-
-        .privacy-note {
-            margin-top: 1rem;
-            font-size: 0.875rem;
-            color: #64748B;
-        }
-
-        /* --- VISUAL ELEMENT (Glass Card) --- */
-        .visual-placeholder {
+        /* --- MATH FRAME (THE HERO) --- */
+        .math-frame {
             position: relative;
-            height: 450px;
-            /* Latar belakang card dibuat lebih transparan agar menyatu dengan background baru */
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
-            border-radius: 24px;
+            width: 100%;
+            max-width: 500px;
+            min-height: 200px;
+            background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(12px);
+            border-radius: 24px;
+            backdrop-filter: blur(20px); /* Efek Kaca Tebal */
             display: flex;
-            align-items: center;
+            flex-direction: column;
             justify-content: center;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+            align-items: center;
+            padding: 3rem;
+            cursor: pointer; /* Indikasi bisa diklik */
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
         }
 
-        .icon-wrapper {
-            color: white;
-            opacity: 0.9;
+        .math-frame:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(59, 130, 246, 0.4);
+            transform: translateY(-5px);
+            box-shadow: 0 30px 60px -10px rgba(59, 130, 246, 0.15);
+        }
+
+        /* Elemen Dekoratif pada Frame */
+        .frame-corner {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-color: rgba(255, 255, 255, 0.2);
+            border-style: solid;
+            transition: all 0.3s ease;
+        }
+        .tl { top: 20px; left: 20px; border-width: 1px 0 0 1px; }
+        .tr { top: 20px; right: 20px; border-width: 1px 1px 0 0; }
+        .bl { bottom: 20px; left: 20px; border-width: 0 0 1px 1px; }
+        .br { bottom: 20px; right: 20px; border-width: 0 1px 1px 0; }
+
+        .math-frame:hover .frame-corner {
+            border-color: var(--color-accent);
+            width: 25px;
+            height: 25px;
+        }
+
+        /* Teks Matematika */
+        .math-content {
+            font-family: var(--font-math);
+            font-size: 2.5rem;
+            color: #E2E8F0;
+            font-style: italic;
+            transition: opacity 0.3s ease;
+        }
+        
+        .math-sub {
+            margin-top: 1.5rem;
+            font-family: var(--font-main);
+            font-size: 0.8rem;
+            color: var(--color-text-muted);
+            opacity: 0.6;
+            font-weight: 300;
         }
 
         /* --- FOOTER --- */
         footer {
-            position: relative;
-            z-index: 2;
-            padding: 2rem;
+            position: absolute;
+            bottom: 2rem;
+            width: 100%;
             text-align: center;
-            font-size: 0.875rem;
-            color: #64748B;
+            color: rgba(255, 255, 255, 0.2);
+            font-size: 0.75rem;
+            z-index: 10;
         }
 
         /* --- RESPONSIVE --- */
-        @media (max-width: 900px) {
-            .hero {
-                grid-template-columns: 1fr;
-                text-align: center;
-                gap: 3rem;
-            }
-            .hero-content { margin: 0 auto; }
-            h1 { font-size: 2.5rem; }
-            .notify-form { flex-direction: column; margin: 0 auto; }
-            .visual-placeholder { height: 300px; }
+        @media (max-width: 768px) {
+            h1 { font-size: 3rem; }
+            .math-frame { max-width: 90%; padding: 2rem; }
+            .math-content { font-size: 1.8rem; }
         }
     </style>
 </head>
 <body>
 
     <canvas id="waveCanvas"></canvas>
-    
     <div class="bg-overlay"></div>
 
     <div class="container">
-        <header>
-            <div class="logo-icon"></div>
-        </header>
+        <div class="brand-pill">MAINTENANCE MODE</div>
+        
+        <h1>COMING SOON</h1>
 
-        <main class="hero">
-            <div class="hero-content">
-                <div class="status-badge">
-                    <span class="status-dot"></span>
-                    Tahap Pembangunan
-                </div>
-                <h1>Membangun Ekosistem Digital Masa Depan.</h1>
-                <p class="lead">
-                    Infrastruktur enterprise yang aman, skalabel, dan ergonomis sedang dipersiapkan. Dapatkan akses prioritas saat peluncuran.
-                </p>
+        <div class="math-frame" onclick="changeMath()" id="mathCard">
+            <div class="frame-corner tl"></div>
+            <div class="frame-corner tr"></div>
+            <div class="frame-corner bl"></div>
+            <div class="frame-corner br"></div>
 
-                <form class="notify-form" onsubmit="event.preventDefault(); alert('Terima kasih. Email Anda telah terdaftar.');">
-                    <div class="input-group">
-                        <input type="email" placeholder="Email bisnis Anda" required>
-                    </div>
-                    <button type="submit" class="btn-primary">Dapatkan Akses</button>
-                </form>
-                <p class="privacy-note">Data Anda terenkripsi dan aman. Bebas spam.</p>
+            <div class="math-content" id="mathDisplay">
+                &int;<sub>-&infin;</sub><sup>&infin;</sup> e<sup>-x&sup2;</sup> dx = &radic;&pi;
             </div>
-
-            <div class="visual-placeholder">
-                <div class="icon-wrapper">
-                   <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
-                        <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
-                        <line x1="6" y1="6" x2="6.01" y2="6"></line>
-                        <line x1="6" y1="18" x2="6.01" y2="18"></line>
-                        <path d="M12 12v2" stroke-opacity="0.5"></path>
-                    </svg>
-                </div>
-            </div>
-        </main>
+            
+            <div class="math-sub">Tap frame to generate new problem</div>
+        </div>
     </div>
 
     <footer>
-        &copy; 2024. Hak Cipta Dilindungi Undang-Undang.
+        &copy; 2024 Enterprise System. All visual elements are generated via code.
     </footer>
 
     <script>
+        /* --- 1. LOGIC GANTI SOAL MATEMATIKA --- */
+        const mathProblems = [
+            // Integral Gaussian
+            `&int;<sub>-&infin;</sub><sup>&infin;</sup> e<sup>-x&sup2;</sup> dx = &radic;&pi;`,
+            // Euler's Identity
+            `e<sup>i&pi;</sup> + 1 = 0`,
+            // Quadratic Formula
+            `x = <span style="font-size:0.8em">(-b &plusmn; &radic;(b<sup>2</sup> - 4ac)) / 2a</span>`,
+            // Limit Definition of Derivative
+            `f'(x) = lim<sub>h&rarr;0</sub> <span style="font-size:0.7em">(f(x+h) - f(x)) / h</span>`,
+            // Einstein
+            `E = mc<sup>2</sup>`,
+             // Pythagoras
+            `a<sup>2</sup> + b<sup>2</sup> = c<sup>2</sup>`
+        ];
+
+        let currentIndex = 0;
+        const display = document.getElementById('mathDisplay');
+        const card = document.getElementById('mathCard');
+
+        function changeMath() {
+            // Efek visual 'klik' manual via JS untuk feedback instan
+            card.style.transform = "scale(0.98)";
+            display.style.opacity = "0";
+
+            setTimeout(() => {
+                // Pindah ke index berikutnya
+                currentIndex = (currentIndex + 1) % mathProblems.length;
+                display.innerHTML = mathProblems[currentIndex];
+                
+                display.style.opacity = "1";
+                card.style.transform = "scale(1)";
+            }, 300);
+        }
+
+        /* --- 2. ANIMASI GELOMBANG TRIGONOMETRI (Dioptimalkan) --- */
         const canvas = document.getElementById('waveCanvas');
         const ctx = canvas.getContext('2d');
-
         let width, height;
         let waves = [];
 
+        // Konfigurasi Gelombang: Lebih halus dan lambat
         const config = {
-            waveCount: 4,        // Jumlah gelombang dikurangi sedikit agar lebih elegan
-            speed: 0.003,        // Kecepatan diperlambat
-            amplitude: 60,
-            frequency: 0.008
+            waveCount: 3, 
+            speed: 0.002,
+            amplitude: 80, 
+            frequency: 0.005 
         };
 
         function resize() {
@@ -336,10 +261,10 @@
             waves = [];
             for (let i = 0; i < config.waveCount; i++) {
                 waves.push({
-                    y: height / 2 + (Math.random() * 300 - 150), 
-                    length: 0.004 + Math.random() * 0.008,
-                    amplitude: 40 + Math.random() * 80,
-                    speed: 0.015 + Math.random() * 0.03,
+                    y: height * 0.6 + (Math.random() * 200 - 100), 
+                    length: 0.003 + Math.random() * 0.005,
+                    amplitude: 50 + Math.random() * 50,
+                    speed: 0.01 + Math.random() * 0.02,
                     offset: Math.random() * Math.PI * 2
                 });
             }
@@ -350,38 +275,24 @@
 
             waves.forEach((wave, index) => {
                 ctx.beginPath();
-                
-                // Opasitas garis disesuaikan agar tidak terlalu dominan di bawah overlay baru
-                const opacity = 0.1 + (index / config.waveCount) * 0.25; 
-                ctx.strokeStyle = `rgba(96, 165, 250, ${opacity})`; // Menggunakan biru yang lebih terang (sky blue) agar terlihat
-                ctx.lineWidth = 1.5;
+                // Warna biru elegan (Royal Blue ke Cyan)
+                const alpha = 0.2 - (index * 0.05);
+                ctx.strokeStyle = `rgba(59, 130, 246, ${alpha})`;
+                ctx.lineWidth = 2;
 
                 for (let x = 0; x < width; x++) {
-                    // Kombinasi Sin dan Cos untuk gerakan yang lebih organik
                     const y = wave.y + 
-                              Math.sin(x * wave.length + wave.offset) * wave.amplitude * Math.cos(wave.offset * 0.5);
-
-                    if (x === 0) {
-                        ctx.moveTo(x, y);
-                    } else {
-                        ctx.lineTo(x, y);
-                    }
+                              Math.sin(x * wave.length + wave.offset) * wave.amplitude * Math.sin(wave.offset * 0.5);
+                    ctx.lineTo(x, y);
                 }
                 ctx.stroke();
-                wave.offset += wave.speed * 0.8;
+                wave.offset += wave.speed;
             });
-
             requestAnimationFrame(draw);
         }
 
-        window.addEventListener('resize', () => {
-            resize();
-            initWaves();
-        });
-
-        resize();
-        initWaves();
-        draw();
+        window.addEventListener('resize', () => { resize(); initWaves(); });
+        resize(); initWaves(); draw();
     </script>
 </body>
 </html>
