@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Segera Hadir | Solusi Enterprise Masa Depan</title>
+    <title>Segera Hadir | Enterprise Solution</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,9 +16,9 @@
             --color-bg-dark: #0B1120;       /* Deep Navy */
             --color-primary: #1E3A8A;       /* Corporate Blue */
             --color-accent: #3B82F6;        /* Bright Royal Blue */
-            --color-text-main: #F8FAFC;     /* Off-white untuk kontras mata */
+            --color-text-main: #F8FAFC;     /* Off-white */
             --color-text-muted: #94A3B8;    /* Greyish blue */
-            --color-glass: rgba(30, 58, 138, 0.15);
+            --color-glass: rgba(15, 23, 42, 0.6); /* Lebih gelap untuk kontras canvas */
             
             --font-main: 'Inter', sans-serif;
             --max-width: 1280px;
@@ -42,26 +42,26 @@
             position: relative;
         }
 
-        /* --- BACKGROUND EFFECTS --- */
-        /* Efek gradasi halus di latar belakang */
-        .bg-glow {
+        /* --- BACKGROUND CANVAS --- */
+        #waveCanvas {
             position: absolute;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(37, 99, 235, 0.15) 0%, rgba(11, 17, 32, 0) 70%);
-            top: -100px;
-            right: -100px;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             z-index: 0;
+            opacity: 0.4; /* Transparansi agar tidak mengganggu teks */
             pointer-events: none;
         }
 
-        .bg-glow-2 {
+        /* Gradient Overlay agar teks tetap terbaca di atas canvas */
+        .bg-overlay {
             position: absolute;
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, rgba(11, 17, 32, 0) 70%);
-            bottom: 0;
-            left: -100px;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, transparent 0%, var(--color-bg-dark) 90%);
             z-index: 0;
             pointer-events: none;
         }
@@ -73,14 +73,14 @@
             margin: 0 auto;
             padding: 0 2rem;
             position: relative;
-            z-index: 1;
+            z-index: 2; /* Di atas canvas */
             flex: 1;
             display: flex;
             flex-direction: column;
             justify-content: center;
         }
 
-        /* --- HEADER (Navigasi Minimalis) --- */
+        /* --- HEADER --- */
         header {
             padding: 2rem 0;
             display: flex;
@@ -89,26 +89,23 @@
         }
 
         .logo {
-            font-weight: 700;
-            font-size: 1.5rem;
-            letter-spacing: -0.02em;
-            color: #fff;
             display: flex;
             align-items: center;
             gap: 0.5rem;
         }
 
         .logo-icon {
-            width: 24px;
-            height: 24px;
-            background: var(--color-accent);
-            border-radius: 4px;
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--color-accent), #1E40AF);
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
         }
 
         /* --- HERO SECTION --- */
         .hero {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1.1fr 0.9fr; /* Sedikit lebih lebar di kiri */
             gap: 4rem;
             align-items: center;
             padding: 4rem 0;
@@ -119,16 +116,26 @@
         }
 
         .status-badge {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
             padding: 0.5rem 1rem;
-            background: var(--color-glass);
-            border: 1px solid rgba(59, 130, 246, 0.3);
+            background: rgba(30, 58, 138, 0.2);
+            border: 1px solid rgba(59, 130, 246, 0.2);
             border-radius: 9999px;
             font-size: 0.875rem;
             font-weight: 500;
-            color: var(--color-accent);
+            color: #60A5FA;
             margin-bottom: 1.5rem;
-            backdrop-filter: blur(4px);
+            backdrop-filter: blur(8px);
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #60A5FA;
+            border-radius: 50%;
+            margin-right: 8px;
+            box-shadow: 0 0 8px #60A5FA;
         }
 
         h1 {
@@ -137,9 +144,11 @@
             font-weight: 700;
             letter-spacing: -0.03em;
             margin-bottom: 1.5rem;
-            background: linear-gradient(to right, #ffffff, #93C5FD);
+            /* Gradient teks yang lebih tajam */
+            background: linear-gradient(to right, #ffffff 20%, #93C5FD 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 40px rgba(147, 197, 253, 0.1);
         }
 
         p.lead {
@@ -147,9 +156,10 @@
             color: var(--color-text-muted);
             margin-bottom: 2.5rem;
             font-weight: 300;
+            max-width: 90%;
         }
 
-        /* --- FORMULIR NOTIFIKASI (Input) --- */
+        /* --- FORMULIR --- */
         .notify-form {
             display: flex;
             gap: 1rem;
@@ -164,38 +174,41 @@
         input[type="email"] {
             width: 100%;
             padding: 1rem 1.25rem;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(11, 17, 32, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.15);
             border-radius: 8px;
             color: white;
             font-family: var(--font-main);
             font-size: 1rem;
             transition: all 0.3s ease;
+            backdrop-filter: blur(4px);
         }
 
         input[type="email"]:focus {
             outline: none;
             border-color: var(--color-accent);
-            background: rgba(255, 255, 255, 0.08);
-            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+            background: rgba(11, 17, 32, 0.8);
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
         }
 
         button.btn-primary {
             padding: 0 2rem;
             background: var(--color-accent);
+            background: linear-gradient(180deg, #3B82F6 0%, #2563EB 100%);
             color: white;
-            border: none;
+            border: 1px solid #2563EB;
             border-radius: 8px;
             font-weight: 600;
             font-size: 1rem;
             cursor: pointer;
-            transition: transform 0.2s, background-color 0.2s;
+            transition: transform 0.2s, box-shadow 0.2s;
             white-space: nowrap;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
 
         button.btn-primary:hover {
-            background-color: #2563EB;
             transform: translateY(-1px);
+            box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);
         }
 
         .privacy-note {
@@ -204,49 +217,38 @@
             color: #64748B;
         }
 
-        /* --- VISUAL ELEMENT (Kanan) --- */
+        /* --- VISUAL ELEMENT (Glass Card) --- */
         .visual-placeholder {
             position: relative;
-            height: 500px;
-            background: linear-gradient(135deg, rgba(30, 58, 138, 0.4), rgba(11, 17, 32, 0.4));
+            height: 450px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
             border-radius: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px); /* Efek kaca frosted */
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
 
-        /* Garis-garis abstrak estetik */
-        .grid-lines {
-            position: absolute;
-            inset: 0;
-            background-image: 
-                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-            background-size: 40px 40px;
-            mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
+        /* Ikon Abstrak di dalam Card */
+        .icon-wrapper {
+            position: relative;
+            z-index: 2;
+            color: white;
+            animation: pulse-glow 3s infinite ease-in-out;
         }
 
-        .abstract-shape {
-            width: 200px;
-            height: 200px;
-            background: var(--color-accent);
-            filter: blur(80px);
-            opacity: 0.4;
-            border-radius: 50%;
-            animation: float 8s infinite ease-in-out;
-        }
-
-        @keyframes float {
-            0% { transform: translate(0, 0); }
-            50% { transform: translate(-20px, 20px); }
-            100% { transform: translate(0, 0); }
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 0.8; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
         }
 
         /* --- FOOTER --- */
         footer {
+            position: relative;
+            z-index: 2;
             padding: 2rem;
             border-top: 1px solid rgba(255, 255, 255, 0.05);
             text-align: center;
@@ -261,75 +263,140 @@
                 text-align: center;
                 gap: 3rem;
             }
-
-            .hero-content {
-                margin: 0 auto;
-            }
-
-            h1 {
-                font-size: 2.5rem;
-            }
-
-            .notify-form {
-                flex-direction: column;
-                margin: 0 auto;
-            }
-            
-            .visual-placeholder {
-                height: 300px;
-            }
+            .hero-content { margin: 0 auto; }
+            h1 { font-size: 2.5rem; }
+            .notify-form { flex-direction: column; margin: 0 auto; }
+            .visual-placeholder { height: 300px; }
         }
     </style>
 </head>
 <body>
 
-    <div class="bg-glow"></div>
-    <div class="bg-glow-2"></div>
+    <canvas id="waveCanvas"></canvas>
+    <div class="bg-overlay"></div>
 
     <div class="container">
         <header>
             <div class="logo">
                 <div class="logo-icon"></div>
-                <span>PerusahaanAnda.</span>
-            </div>
-            </header>
+                </div>
+        </header>
 
         <main class="hero">
             <div class="hero-content">
                 <div class="status-badge">
+                    <span class="status-dot"></span>
                     Tahap Pembangunan
                 </div>
-                <h1>Kami Membangun Sesuatu yang Luar Biasa.</h1>
+                <h1>Membangun Ekosistem Digital Masa Depan.</h1>
                 <p class="lead">
-                    Kami sedang menyiapkan infrastruktur digital kelas dunia untuk melayani kebutuhan bisnis Anda. Platform kami akan segera hadir dengan performa dan keamanan yang ditingkatkan.
+                    Infrastruktur enterprise yang aman, skalabel, dan ergonomis sedang dipersiapkan. Dapatkan akses prioritas saat peluncuran.
                 </p>
 
                 <form class="notify-form" onsubmit="event.preventDefault(); alert('Terima kasih. Email Anda telah terdaftar.');">
                     <div class="input-group">
-                        <input type="email" placeholder="Masukkan email bisnis Anda" required>
+                        <input type="email" placeholder="Email bisnis Anda" required>
                     </div>
-                    <button type="submit" class="btn-primary">Beri Tahu Saya</button>
+                    <button type="submit" class="btn-primary">Dapatkan Akses</button>
                 </form>
-                <p class="privacy-note">Kami menghargai privasi. Tidak ada spam.</p>
+                <p class="privacy-note">Data Anda terenkripsi dan aman. Bebas spam.</p>
             </div>
 
             <div class="visual-placeholder">
-                <div class="grid-lines"></div>
-                <div class="abstract-shape"></div>
-                <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style="color: rgba(255,255,255,0.8); z-index: 2;">
-                    <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
-                    <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
-                    <line x1="6" y1="6" x2="6.01" y2="6"></line>
-                    <line x1="6" y1="18" x2="6.01" y2="18"></line>
-                </svg>
+                <div class="icon-wrapper">
+                   <svg width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"></path>
+                        <path d="M12 12v9"></path>
+                        <path d="m16 16-4-4-4 4"></path>
+                    </svg>
+                </div>
             </div>
         </main>
     </div>
 
     <footer>
-        &copy; 2024 Perusahaan Anda, Tbk. Hak Cipta Dilindungi. <br>
-        <span style="opacity: 0.6">Jakarta, Indonesia.</span>
+        &copy; 2024. Hak Cipta Dilindungi Undang-Undang.
     </footer>
 
+    <script>
+        const canvas = document.getElementById('waveCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let width, height;
+        let waves = [];
+
+        // Konfigurasi Gelombang
+        const config = {
+            waveCount: 5,        // Jumlah lapisan gelombang
+            speed: 0.005,        // Kecepatan gerakan
+            amplitude: 50,       // Tinggi gelombang dasar
+            frequency: 0.01      // Kerapatan gelombang
+        };
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+
+        function initWaves() {
+            waves = [];
+            for (let i = 0; i < config.waveCount; i++) {
+                waves.push({
+                    y: height / 2 + (Math.random() * 200 - 100), // Posisi Y acak di tengah
+                    length: 0.005 + Math.random() * 0.01,        // Frekuensi unik
+                    amplitude: 30 + Math.random() * 80,          // Amplitudo unik
+                    speed: 0.02 + Math.random() * 0.04,          // Kecepatan unik
+                    offset: Math.random() * Math.PI * 2          // Fase awal unik
+                });
+            }
+        }
+
+        function draw() {
+            // Hapus canvas dengan efek trail (opsional), di sini clear total
+            ctx.clearRect(0, 0, width, height);
+
+            // Loop setiap gelombang
+            waves.forEach((wave, index) => {
+                ctx.beginPath();
+                
+                // Warna biru premium dengan transparansi bertingkat
+                // Gelombang belakang lebih transparan, depan lebih jelas
+                const opacity = 0.05 + (index / config.waveCount) * 0.15; 
+                ctx.strokeStyle = `rgba(59, 130, 246, ${opacity})`; 
+                ctx.lineWidth = 2;
+
+                for (let x = 0; x < width; x++) {
+                    // Rumus Trigonometri: y = Center + Amplitude * sin(x * frequency + phase)
+                    // Kita gabungkan sin dan cos untuk variasi
+                    const y = wave.y + 
+                              Math.sin(x * wave.length + wave.offset) * wave.amplitude * Math.sin(wave.offset);
+
+                    if (x === 0) {
+                        ctx.moveTo(x, y);
+                    } else {
+                        ctx.lineTo(x, y);
+                    }
+                }
+                
+                ctx.stroke();
+                
+                // Update fase untuk animasi
+                wave.offset += wave.speed * 0.5;
+            });
+
+            requestAnimationFrame(draw);
+        }
+
+        // Event Listeners
+        window.addEventListener('resize', () => {
+            resize();
+            initWaves();
+        });
+
+        // Start
+        resize();
+        initWaves();
+        draw();
+    </script>
 </body>
 </html>
