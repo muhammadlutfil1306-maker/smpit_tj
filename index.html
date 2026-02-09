@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tahap Pengembangan | Enterprise Mode</title>
+    <title>Tahap Pengembangan | SMP IT Thoriqul Jannah</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -28,42 +28,45 @@
             font-family: var(--font-main);
             background-color: var(--color-bg-dark);
             color: var(--color-text-main);
-            height: 100vh;
-            overflow: hidden;
+            /* PERBAIKAN 1: Gunakan min-height agar bisa scroll jika layar pendek */
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             position: relative;
-            user-select: none;
+            overflow-x: hidden; /* Hanya sembunyikan scroll horizontal */
         }
 
-        /* --- BACKGROUND --- */
+        /* --- BACKGROUND (FIXED agar tidak ikut scroll) --- */
         #waveCanvas {
-            position: absolute;
+            position: fixed;
             inset: 0;
             z-index: 0;
             opacity: 0.5;
             mix-blend-mode: screen;
+            pointer-events: none;
         }
 
         .bg-overlay {
-            position: absolute;
+            position: fixed;
             inset: 0;
             background: linear-gradient(135deg, rgba(30, 58, 138, 0.3) 0%, #0B1120 90%);
             z-index: 1;
+            pointer-events: none;
         }
 
-        /* --- CONTAINER --- */
+        /* --- CONTAINER UTAMA --- */
         .container {
             position: relative;
             z-index: 10;
-            flex: 1;
+            /* PERBAIKAN 2: Flex grow untuk mengisi ruang kosong */
+            flex: 1; 
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: center; /* Center vertikal */
             align-items: center;
-            padding: 2rem;
+            padding: 2rem 1rem; /* Padding aman kiri kanan */
             width: 100%;
-            max-width: 700px;
+            max-width: 800px;
             margin: 0 auto;
         }
 
@@ -81,11 +84,12 @@
         }
 
         h1 {
-            font-size: 3.5rem;
+            /* PERBAIKAN 3: Ukuran font responsif (clamp) agar pas di laptop */
+            font-size: clamp(2rem, 5vw, 3.5rem); 
             font-weight: 800;
             letter-spacing: -0.02em;
-            line-height: 1.1;
-            margin-bottom: 2.5rem;
+            line-height: 1.2;
+            margin-bottom: 2rem;
             text-align: center;
             background: linear-gradient(to right, #FFFFFF 20%, #93C5FD 100%);
             -webkit-background-clip: text;
@@ -96,21 +100,24 @@
         .quiz-frame {
             position: relative;
             width: 100%;
+            max-width: 600px; /* Batasi lebar agar rapi */
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 24px;
             backdrop-filter: blur(24px);
-            padding: 2.5rem;
+            padding: 2rem;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
             display: flex;
             flex-direction: column;
+            /* PERBAIKAN 4: Margin bawah agar tidak nempel footer saat di-scroll */
+            margin-bottom: 2rem; 
         }
 
         .quiz-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
             font-size: 0.9rem;
             color: var(--color-text-muted);
             border-bottom: 1px solid rgba(255,255,255,0.05);
@@ -124,14 +131,15 @@
 
         .question-box {
             font-family: var(--font-math);
-            font-size: 2rem;
+            font-size: 1.8rem;
             color: #E2E8F0;
-            margin-bottom: 2.5rem;
+            margin-bottom: 2rem;
             text-align: center;
             min-height: 60px;
             display: flex;
             align-items: center;
             justify-content: center;
+            line-height: 1.4;
         }
 
         /* --- OPTIONS GRID --- */
@@ -144,11 +152,11 @@
         .btn-option {
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 1.25rem;
-            border-radius: 16px;
+            padding: 1rem;
+            border-radius: 12px;
             color: white;
             font-family: var(--font-main);
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 500;
             cursor: pointer;
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
@@ -160,14 +168,12 @@
             transform: translateY(-2px);
         }
 
-        .btn-option:disabled { cursor: default; }
+        .btn-option:disabled { cursor: default; opacity: 0.8; }
 
-        /* Status Colors */
         .btn-option.correct {
             background: rgba(16, 185, 129, 0.2) !important;
             border-color: var(--color-success) !important;
             color: var(--color-success);
-            box-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
         }
 
         .btn-option.wrong {
@@ -177,20 +183,27 @@
             opacity: 0.6;
         }
 
-        /* Footer */
+        /* --- FOOTER --- */
         footer {
-            position: absolute;
-            bottom: 1.5rem;
-            width: 100%;
-            text-align: center;
-            color: rgba(255, 255, 255, 0.2);
-            font-size: 0.8rem;
+            /* PERBAIKAN 5: Layout Relative (bukan Absolute) agar tidak menumpuk */
+            position: relative;
             z-index: 10;
+            padding: 1.5rem;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 0.85rem;
+            margin-top: auto; /* Trik Flexbox agar footer nempel bawah jika konten sedikit */
+            width: 100%;
+        }
+
+        /* --- RESPONSIVE LAPTOP & HP --- */
+        @media (max-width: 900px) {
+            .container { padding-top: 3rem; justify-content: flex-start; } /* Mulai dari atas di layar kecil */
+            .quiz-frame { padding: 1.5rem; }
+            .question-box { font-size: 1.5rem; }
         }
 
         @media (max-width: 600px) {
-            h1 { font-size: 2rem; }
-            .quiz-frame { padding: 1.5rem; }
             .options-grid { grid-template-columns: 1fr; }
         }
     </style>
@@ -202,11 +215,11 @@
 
     <div class="container">
         <div class="brand-pill">TAHAP PENGEMBANGAN</div>
-        <h1>KAMI SEDANG MEMBANGUN<br>SESUATU YANG HEBAT</h1>
+        <h1>WEBSITE RESMI<br>SMP IT THORIQUL JANNAH</h1>
 
         <div class="quiz-frame">
             <div class="quiz-header">
-                <div>Asah Otak</div>
+                <div>Kuis Matematika</div>
                 <div>Skor: <span id="scoreVal" class="score-display">0</span></div>
             </div>
 
@@ -219,134 +232,100 @@
     </div>
 
     <footer>
-        &copy; 2026 Enterprise System. Dilindungi Undang-Undang.
+        &copy; 2026 SMP IT Thoriqul Jannah. All Rights Reserved.
     </footer>
 
     <script>
-        /* --- 1. GENERATOR SOAL MATEMATIKA (100% INDONESIA) --- */
-        
+        /* --- GAME LOGIC --- */
         let currentScore = 0;
         let isProcessing = false;
-
-        // Fungsi Random Helper
         const rand = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
-        // Generator Soal
-        function generateQuestion() {
-            const types = ['add', 'sub', 'mul', 'perc', 'alg'];
-            const type = types[rand(0, types.length - 1)];
-            let qText = "", correct = 0;
-
-            switch(type) {
-                case 'add': // Penjumlahan
-                    const a1 = rand(15, 99);
-                    const b1 = rand(15, 99);
-                    qText = `${a1} + ${b1} = ?`;
-                    correct = a1 + b1;
-                    break;
-                case 'sub': // Pengurangan
-                    const a2 = rand(50, 150);
-                    const b2 = rand(10, a2 - 10); // Pastikan positif
-                    qText = `${a2} - ${b2} = ?`;
-                    correct = a2 - b2;
-                    break;
-                case 'mul': // Perkalian Sederhana
-                    const a3 = rand(3, 15);
-                    const b3 = rand(5, 20);
-                    qText = `${a3} × ${b3} = ?`;
-                    correct = a3 * b3;
-                    break;
-                case 'perc': // Persentase
-                    const p = rand(1, 9) * 10; // 10, 20... 90
-                    const val = rand(2, 20) * 10; // 20, 30... 200
-                    qText = `${p}% dari ${val} adalah?`;
-                    correct = (p / 100) * val;
-                    break;
-                case 'alg': // Aljabar Simple (Cari X)
-                    const x = rand(2, 12);
-                    const adder = rand(5, 20);
-                    const total = (2 * x) + adder; // 2x + adder = total
-                    qText = `Jika 2x + ${adder} = ${total}, maka x = ?`;
-                    correct = x;
-                    break;
+        // Kumpulan Generator Soal
+        const generators = [
+            function addition() { // Penjumlahan
+                const a = rand(20, 99); const b = rand(20, 99);
+                return { q: `${a} + ${b} = ?`, a: a + b };
+            },
+            function subtraction() { // Pengurangan
+                const a = rand(50, 150); const b = rand(10, 49);
+                return { q: `${a} - ${b} = ?`, a: a - b };
+            },
+            function multiplication() { // Perkalian
+                const a = rand(4, 12); const b = rand(5, 15);
+                return { q: `${a} × ${b} = ?`, a: a * b };
+            },
+            function algebra() { // Cari x
+                const x = rand(2, 10); const add = rand(5, 20);
+                const total = (3 * x) + add;
+                return { q: `3x + ${add} = ${total}, x = ?`, a: x };
+            },
+            function percentage() { // Persentase sederhana
+                const p = rand(1, 5) * 10; // 10, 20... 50
+                const v = rand(2, 10) * 10; // 20, 30... 100
+                return { q: `${p}% dari ${v} adalah?`, a: (p/100)*v };
             }
+        ];
 
-            return {
-                question: qText,
-                answer: correct,
-                options: generateOptions(correct)
-            };
-        }
-
-        // Generator Pilihan Ganda (Distractor Logic)
-        function generateOptions(correctAnswer) {
-            let opts = new Set([correctAnswer]);
+        function generateOptions(correct) {
+            let opts = new Set([correct]);
             while(opts.size < 4) {
-                // Buat jawaban salah yang "mirip" (correct +/- acak)
-                let wrong = correctAnswer + rand(-10, 10);
-                if(wrong !== correctAnswer && wrong > 0) {
-                    opts.add(wrong);
-                }
+                let diff = rand(1, 10);
+                let wrong = Math.random() > 0.5 ? correct + diff : correct - diff;
+                if(wrong > 0 && wrong !== correct) opts.add(wrong);
             }
-            // Acak urutan array
             return Array.from(opts).sort(() => Math.random() - 0.5);
         }
 
-        // Render UI
-        function loadNewQuestion() {
-            const qData = generateQuestion();
+        function loadQuestion() {
+            const gen = generators[rand(0, generators.length - 1)];
+            const data = gen();
+            const options = generateOptions(data.a);
+
             const qEl = document.getElementById('questionText');
             const gridEl = document.getElementById('optionsGrid');
 
-            // Animasi Fade In Text
             qEl.style.opacity = 0;
             setTimeout(() => {
-                qEl.innerHTML = qData.question;
+                qEl.innerText = data.q;
                 qEl.style.opacity = 1;
             }, 200);
 
-            // Render Tombol
             gridEl.innerHTML = '';
-            qData.options.forEach(opt => {
+            options.forEach(opt => {
                 const btn = document.createElement('button');
                 btn.className = 'btn-option';
-                btn.innerText = opt;
-                btn.onclick = () => handleAnswer(btn, opt, qData.answer);
+                btn.innerText = opt; // Angka bulat
+                btn.onclick = () => checkAnswer(btn, opt, data.a);
                 gridEl.appendChild(btn);
             });
-            
             isProcessing = false;
         }
 
-        function handleAnswer(btn, value, correct) {
+        function checkAnswer(btn, val, correct) {
             if (isProcessing) return;
             isProcessing = true;
 
-            const buttons = document.querySelectorAll('.btn-option');
+            const allBtns = document.querySelectorAll('.btn-option');
             
-            if (value === correct) {
+            if (val === correct) {
                 btn.classList.add('correct');
                 currentScore += 10;
                 document.getElementById('scoreVal').innerText = currentScore;
             } else {
                 btn.classList.add('wrong');
-                // Highlight yang benar
-                buttons.forEach(b => {
+                allBtns.forEach(b => {
                     if (parseInt(b.innerText) === correct) b.classList.add('correct');
                 });
             }
 
-            // Kunci semua tombol
-            buttons.forEach(b => b.disabled = true);
-
-            // Delay ke soal berikutnya
-            setTimeout(loadNewQuestion, 1200);
+            allBtns.forEach(b => b.disabled = true);
+            setTimeout(loadQuestion, 1500);
         }
 
-        // Init Game
-        loadNewQuestion();
+        loadQuestion();
 
-        /* --- 2. ANIMASI BACKGROUND (Visual Premium) --- */
+        /* --- VISUAL ANIMATION (Tetap Ringan) --- */
         const canvas = document.getElementById('waveCanvas');
         const ctx = canvas.getContext('2d');
         let width, height, waves = [];
@@ -358,30 +337,28 @@
 
         function initWaves() {
             waves = [];
-            for (let i = 0; i < 4; i++) {
+            for(let i=0; i<3; i++) {
                 waves.push({
                     y: height * 0.5,
-                    length: 0.003 + Math.random() * 0.005,
-                    amplitude: 50 + Math.random() * 50,
+                    len: 0.002 + Math.random() * 0.005,
+                    amp: 40 + Math.random() * 40,
                     speed: 0.005 + Math.random() * 0.01,
-                    offset: Math.random() * Math.PI * 2
+                    off: Math.random() * Math.PI * 2
                 });
             }
         }
 
         function draw() {
             ctx.clearRect(0, 0, width, height);
-            waves.forEach((wave, index) => {
+            waves.forEach((w, i) => {
                 ctx.beginPath();
-                const opacity = 0.1 + (index * 0.1);
-                ctx.strokeStyle = `rgba(59, 130, 246, ${opacity})`;
-                ctx.lineWidth = 1.5;
-                for (let x = 0; x < width; x++) {
-                    const y = wave.y + Math.sin(x * wave.length + wave.offset) * wave.amplitude * Math.sin(wave.offset * 0.5);
-                    ctx.lineTo(x, y);
+                ctx.strokeStyle = `rgba(59, 130, 246, ${0.1 + (i * 0.1)})`;
+                ctx.lineWidth = 2;
+                for(let x=0; x<width; x++) {
+                    ctx.lineTo(x, w.y + Math.sin(x * w.len + w.off) * w.amp * Math.sin(w.off * 0.5));
                 }
                 ctx.stroke();
-                wave.offset += wave.speed;
+                w.off += w.speed;
             });
             requestAnimationFrame(draw);
         }
