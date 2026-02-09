@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Segera Kembali | Maintenance Mode</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #0a0a0a;
+            --text-color: #e0e0e0;
+            --accent-color: #d4af37; /* Metallic Gold */
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(circle at top right, #1a1a1a 0%, #000000 100%);
+            color: var(--text-color);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Ambient Background Glow */
+        .glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, rgba(0,0,0,0) 70%);
+            top: -200px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .container {
+            text-align: center;
+            padding: 3rem;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            max-width: 700px;
+            width: 90%;
+            z-index: 10;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            opacity: 0;
+            animation: fadeIn 1.5s ease-out forwards;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            color: var(--accent-color);
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+            background: linear-gradient(to right, #fff, #999);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p.subtitle {
+            font-size: 1rem;
+            color: #aaa;
+            line-height: 1.6;
+            margin-bottom: 2.5rem;
+            font-weight: 300;
+        }
+
+        /* Countdown Timer */
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .time-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .time-val {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--accent-color);
+        }
+
+        .time-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        /* Progress Bar */
+        .progress-wrapper {
+            width: 100%;
+            margin-bottom: 2.5rem;
+        }
+        
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: #888;
+            margin-bottom: 10px;
+        }
+
+        .progress-bar-bg {
+            width: 100%;
+            height: 4px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%; /* Animated via JS */
+            background: var(--accent-color);
+            border-radius: 2px;
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+            transition: width 2s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        /* Form */
+        .notify-form {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        input[type="email"] {
+            padding: 12px 20px;
+            border-radius: 5px;
+            border: 1px solid #333;
+            background: rgba(0,0,0,0.3);
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            width: 60%;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        input[type="email"]:focus {
+            border-color: var(--accent-color);
+        }
+
+        button {
+            padding: 12px 25px;
+            background: var(--accent-color);
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.8rem;
+        }
+
+        button:hover {
+            background: #f0c94e;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.2);
+        }
+
+        footer {
+            margin-top: 2rem;
+            font-size: 0.75rem;
+            color: #444;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 600px) {
+            h1 { font-size: 2rem; }
+            .countdown { gap: 1rem; }
+            .time-val { font-size: 1.8rem; }
+            .container { padding: 2rem 1.5rem; }
+            .notify-form { flex-direction: column; }
+            input[type="email"] { width: 100%; }
+            button { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="glow"></div>
+
+    <div class="container">
+        <div class="logo">BRAND NAME</div>
+
+        <h1>Evolusi Sedang Terjadi</h1>
+        <p class="subtitle">
+            Kami sedang melakukan penyempurnaan sistem untuk menghadirkan pengalaman digital yang lebih eksklusif dan cepat. Kami akan segera kembali.
+        </p>
+
+        <div class="progress-wrapper">
+            <div class="progress-label">
+                <span>Progress Pembaruan</span>
+                <span>94%</span>
+            </div>
+            <div class="progress-bar-bg">
+                <div class="progress-bar-fill" id="progressBar"></div>
+            </div>
+        </div>
+
+        <div class="countdown" id="countdown">
+            <div class="time-box">
+                <span class="time-val" id="hours">00</span>
+                <span class="time-label">Jam</span>
+            </div>
+            <div class="time-box">
+                <span class="time-val" id="minutes">00</span>
+                <span class="time-label">Menit</span>
+            </div>
+            <div class="time-box">
+                <span class="time-val" id="seconds">00</span>
+                <span class="time-label">Detik</span>
+            </div>
+        </div>
+
+        <form class="notify-form" onsubmit="event.preventDefault(); alert('Terima kasih! Kami akan memberi tahu Anda segera.');">
+            <input type="email" placeholder="Masukkan email Anda" required>
+            <button type="submit">Beri Tahu Saya</button>
+        </form>
+
+        <footer>
+            &copy; 2024 Brand Name. All Rights Reserved.
+        </footer>
+    </div>
+
+    <script>
+        // Animasi Progress Bar saat load
+        window.addEventListener('load', () => {
+            document.getElementById('progressBar').style.width = '94%';
+        });
+
+        // Set waktu selesai (Contoh: 4 jam dari sekarang)
+        // Ganti baris di bawah ini dengan tanggal target Anda yang sebenarnya
+        // const countDownDate = new Date("Feb 20, 2024 15:00:00").getTime();
+        const countDownDate = new Date().getTime() + (4 * 60 * 60 * 1000) + (15 * 60 * 1000); 
+
+        const x = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = countDownDate - now;
+
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Format angka agar selalu 2 digit (09, bukan 9)
+            document.getElementById("hours").innerText = hours < 10 ? "0" + hours : hours;
+            document.getElementById("minutes").innerText = minutes < 10 ? "0" + minutes : minutes;
+            document.getElementById("seconds").innerText = seconds < 10 ? "0" + seconds : seconds;
+
+            if (distance < 0) {
+                clearInterval(x);
+                document.getElementById("countdown").innerHTML = "<h3 style='color:#d4af37; font-family: Playfair Display;'>We Are Live!</h3>";
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
