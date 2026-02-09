@@ -17,7 +17,7 @@
             --color-success: #10B981;
             --color-error: #EF4444;
             --color-text-main: #F8FAFC;
-            --color-text-muted: #64748B;
+            --color-text-muted: #94A3B8;
             --font-main: 'Inter', sans-serif;
             --font-math: 'Crimson Pro', serif;
         }
@@ -33,26 +33,26 @@
             display: flex;
             flex-direction: column;
             position: relative;
-            user-select: none; /* Mencegah seleksi teks saat bermain */
+            user-select: none;
         }
 
-        /* --- BACKGROUND LAYERS --- */
+        /* --- BACKGROUND --- */
         #waveCanvas {
             position: absolute;
             inset: 0;
             z-index: 0;
-            opacity: 0.6;
+            opacity: 0.5;
             mix-blend-mode: screen;
         }
 
         .bg-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(135deg, rgba(30, 58, 138, 0.4) 0%, #0B1120 80%);
+            background: linear-gradient(135deg, rgba(30, 58, 138, 0.3) 0%, #0B1120 90%);
             z-index: 1;
         }
 
-        /* --- CONTENT CONTAINER --- */
+        /* --- CONTAINER --- */
         .container {
             position: relative;
             z-index: 10;
@@ -61,16 +61,14 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            text-align: center;
             padding: 2rem;
             width: 100%;
-            max-width: 600px;
+            max-width: 700px;
             margin: 0 auto;
         }
 
-        /* --- TYPOGRAPHY --- */
         .brand-pill {
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
             padding: 6px 16px;
             background: rgba(59, 130, 246, 0.1);
             border: 1px solid rgba(59, 130, 246, 0.3);
@@ -80,63 +78,63 @@
             font-weight: 600;
             letter-spacing: 0.1em;
             text-transform: uppercase;
-            backdrop-filter: blur(4px);
         }
 
         h1 {
-            font-size: 4rem;
+            font-size: 3.5rem;
             font-weight: 800;
-            letter-spacing: -0.04em;
+            letter-spacing: -0.02em;
             line-height: 1.1;
             margin-bottom: 2.5rem;
-            background: linear-gradient(to bottom, #FFFFFF 0%, #93C5FD 100%);
+            text-align: center;
+            background: linear-gradient(to right, #FFFFFF 20%, #93C5FD 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 30px rgba(59, 130, 246, 0.2));
         }
 
-        /* --- QUIZ FRAME (GLASSMORPHISM) --- */
+        /* --- QUIZ CARD --- */
         .quiz-frame {
             position: relative;
             width: 100%;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 24px;
-            backdrop-filter: blur(20px);
-            padding: 2rem;
-            box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.5);
-            transition: transform 0.3s ease;
-            min-height: 300px;
+            backdrop-filter: blur(24px);
+            padding: 2.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
         }
 
         .quiz-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1.5rem;
-            font-size: 0.85rem;
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
             color: var(--color-text-muted);
             border-bottom: 1px solid rgba(255,255,255,0.05);
             padding-bottom: 1rem;
         }
 
-        .score-box span { color: var(--color-accent); font-weight: bold; }
+        .score-display {
+            font-weight: 700;
+            color: var(--color-accent);
+        }
 
-        .question-text {
+        .question-box {
             font-family: var(--font-math);
-            font-size: 1.5rem;
+            font-size: 2rem;
             color: #E2E8F0;
-            margin-bottom: 2rem;
-            min-height: 3rem; /* Menjaga tinggi agar tidak lompat */
+            margin-bottom: 2.5rem;
+            text-align: center;
+            min-height: 60px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        /* Options Grid */
+        /* --- OPTIONS GRID --- */
         .options-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -144,59 +142,56 @@
         }
 
         .btn-option {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 1rem;
-            border-radius: 12px;
+            padding: 1.25rem;
+            border-radius: 16px;
             color: white;
             font-family: var(--font-main);
-            font-size: 1rem;
+            font-size: 1.1rem;
+            font-weight: 500;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .btn-option:hover:not([disabled]) {
-            background: rgba(59, 130, 246, 0.2);
+            background: rgba(59, 130, 246, 0.15);
             border-color: var(--color-accent);
             transform: translateY(-2px);
         }
 
-        .btn-option:disabled { cursor: default; opacity: 0.7; }
-        
-        /* State Warna Jawaban */
-        .btn-option.correct { background: rgba(16, 185, 129, 0.2) !important; border-color: var(--color-success) !important; color: var(--color-success); }
-        .btn-option.wrong { background: rgba(239, 68, 68, 0.2) !important; border-color: var(--color-error) !important; opacity: 0.5; }
+        .btn-option:disabled { cursor: default; }
 
-        /* Loading Spinner */
-        .loader {
-            border: 3px solid rgba(255,255,255,0.1);
-            border-top: 3px solid var(--color-accent);
-            border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            animation: spin 1s linear infinite;
-            display: none;
-            margin: 0 auto;
+        /* Status Colors */
+        .btn-option.correct {
+            background: rgba(16, 185, 129, 0.2) !important;
+            border-color: var(--color-success) !important;
+            color: var(--color-success);
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
         }
 
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .btn-option.wrong {
+            background: rgba(239, 68, 68, 0.2) !important;
+            border-color: var(--color-error) !important;
+            color: var(--color-error);
+            opacity: 0.6;
+        }
 
-        /* --- FOOTER --- */
+        /* Footer */
         footer {
             position: absolute;
-            bottom: 2rem;
+            bottom: 1.5rem;
             width: 100%;
             text-align: center;
             color: rgba(255, 255, 255, 0.2);
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             z-index: 10;
         }
 
-        /* --- RESPONSIVE --- */
         @media (max-width: 600px) {
-            h1 { font-size: 2.5rem; }
+            h1 { font-size: 2rem; }
+            .quiz-frame { padding: 1.5rem; }
             .options-grid { grid-template-columns: 1fr; }
-            .container { padding: 1.5rem; }
         }
     </style>
 </head>
@@ -206,20 +201,17 @@
     <div class="bg-overlay"></div>
 
     <div class="container">
-        <div class="brand-pill">UNDER DEVELOPMENT</div>
-        
-        <h1>WE ARE BUILDING<br>SOMETHING GREAT</h1>
+        <div class="brand-pill">TAHAP PENGEMBANGAN</div>
+        <h1>KAMI SEDANG MEMBANGUN<br>SESUATU YANG HEBAT</h1>
 
-        <div class="quiz-frame" id="quizCard">
+        <div class="quiz-frame">
             <div class="quiz-header">
-                <div>Math Challenge</div>
-                <div class="score-box">Score: <span id="scoreVal">0</span></div>
+                <div>Asah Otak</div>
+                <div>Skor: <span id="scoreVal" class="score-display">0</span></div>
             </div>
 
-            <div id="loader" class="loader"></div>
-            <div class="question-text" id="questionText">
-                Memuat soal matematika...
-            </div>
+            <div class="question-box" id="questionText">
+                </div>
 
             <div class="options-grid" id="optionsGrid">
                 </div>
@@ -227,130 +219,137 @@
     </div>
 
     <footer>
-        &copy; 2026 Enterprise System. Powered by Open Trivia API.
+        &copy; 2026 Enterprise System. Dilindungi Undang-Undang.
     </footer>
 
     <script>
-        /* --- 1. LOGIC KUIS MATEMATIKA (Open Trivia DB) --- */
+        /* --- 1. GENERATOR SOAL MATEMATIKA (100% INDONESIA) --- */
+        
         let currentScore = 0;
-        let isAnswering = false;
+        let isProcessing = false;
 
-        const questionEl = document.getElementById('questionText');
-        const optionsEl = document.getElementById('optionsGrid');
-        const scoreEl = document.getElementById('scoreVal');
-        const loader = document.getElementById('loader');
+        // Fungsi Random Helper
+        const rand = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
-        // Fungsi Decode HTML Entities (karena API mengembalikan &quot; dll)
-        function decodeHTML(html) {
-            const txt = document.createElement("textarea");
-            txt.innerHTML = html;
-            return txt.value;
-        }
+        // Generator Soal
+        function generateQuestion() {
+            const types = ['add', 'sub', 'mul', 'perc', 'alg'];
+            const type = types[rand(0, types.length - 1)];
+            let qText = "", correct = 0;
 
-        // Fungsi Acak Array (Fisher-Yates Shuffle)
-        function shuffleArray(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
+            switch(type) {
+                case 'add': // Penjumlahan
+                    const a1 = rand(15, 99);
+                    const b1 = rand(15, 99);
+                    qText = `${a1} + ${b1} = ?`;
+                    correct = a1 + b1;
+                    break;
+                case 'sub': // Pengurangan
+                    const a2 = rand(50, 150);
+                    const b2 = rand(10, a2 - 10); // Pastikan positif
+                    qText = `${a2} - ${b2} = ?`;
+                    correct = a2 - b2;
+                    break;
+                case 'mul': // Perkalian Sederhana
+                    const a3 = rand(3, 15);
+                    const b3 = rand(5, 20);
+                    qText = `${a3} × ${b3} = ?`;
+                    correct = a3 * b3;
+                    break;
+                case 'perc': // Persentase
+                    const p = rand(1, 9) * 10; // 10, 20... 90
+                    const val = rand(2, 20) * 10; // 20, 30... 200
+                    qText = `${p}% dari ${val} adalah?`;
+                    correct = (p / 100) * val;
+                    break;
+                case 'alg': // Aljabar Simple (Cari X)
+                    const x = rand(2, 12);
+                    const adder = rand(5, 20);
+                    const total = (2 * x) + adder; // 2x + adder = total
+                    qText = `Jika 2x + ${adder} = ${total}, maka x = ?`;
+                    correct = x;
+                    break;
             }
+
+            return {
+                question: qText,
+                answer: correct,
+                options: generateOptions(correct)
+            };
         }
 
-        async function fetchQuestion() {
-            try {
-                // Tampilkan Loading
-                loader.style.display = 'block';
-                questionEl.style.display = 'none';
-                optionsEl.innerHTML = ''; // Kosongkan tombol lama
-                isAnswering = true; // Kunci sementara loading
-
-                // Fetch data dari Open Trivia DB (Category 19 = Math)
-                const res = await fetch('https://opentdb.com/api.php?amount=1&category=19&type=multiple');
-                const data = await res.json();
-
-                if (data.results && data.results.length > 0) {
-                    const q = data.results[0];
-                    renderQuestion(q);
-                } else {
-                    // Fallback jika API limit/error
-                    questionEl.innerHTML = "Gagal memuat soal. Coba lagi nanti.";
-                    setTimeout(fetchQuestion, 3000);
+        // Generator Pilihan Ganda (Distractor Logic)
+        function generateOptions(correctAnswer) {
+            let opts = new Set([correctAnswer]);
+            while(opts.size < 4) {
+                // Buat jawaban salah yang "mirip" (correct +/- acak)
+                let wrong = correctAnswer + rand(-10, 10);
+                if(wrong !== correctAnswer && wrong > 0) {
+                    opts.add(wrong);
                 }
-
-            } catch (error) {
-                console.error("Error fetching quiz:", error);
-                questionEl.innerHTML = "Koneksi terganggu. Mengambil ulang...";
-                setTimeout(fetchQuestion, 2000);
             }
+            // Acak urutan array
+            return Array.from(opts).sort(() => Math.random() - 0.5);
         }
 
-        function renderQuestion(qData) {
-            loader.style.display = 'none';
-            questionEl.style.display = 'flex'; // Kembalikan ke flex center
-            isAnswering = false; // Buka kunci
+        // Render UI
+        function loadNewQuestion() {
+            const qData = generateQuestion();
+            const qEl = document.getElementById('questionText');
+            const gridEl = document.getElementById('optionsGrid');
 
-            // Set Teks Soal
-            questionEl.innerHTML = decodeHTML(qData.question);
+            // Animasi Fade In Text
+            qEl.style.opacity = 0;
+            setTimeout(() => {
+                qEl.innerHTML = qData.question;
+                qEl.style.opacity = 1;
+            }, 200);
 
-            // Gabungkan jawaban benar & salah
-            let answers = [...qData.incorrect_answers, qData.correct_answer];
-            // Acak posisi jawaban
-            shuffleArray(answers);
-
-            // Buat Tombol
-            answers.forEach(ans => {
+            // Render Tombol
+            gridEl.innerHTML = '';
+            qData.options.forEach(opt => {
                 const btn = document.createElement('button');
                 btn.className = 'btn-option';
-                btn.innerHTML = decodeHTML(ans);
-                
-                // Event Klik
-                btn.onclick = () => checkAnswer(btn, ans, qData.correct_answer);
-                
-                optionsEl.appendChild(btn);
+                btn.innerText = opt;
+                btn.onclick = () => handleAnswer(btn, opt, qData.answer);
+                gridEl.appendChild(btn);
             });
+            
+            isProcessing = false;
         }
 
-        function checkAnswer(selectedBtn, selectedAns, correctAns) {
-            if (isAnswering) return; // Mencegah klik ganda
-            isAnswering = true;
+        function handleAnswer(btn, value, correct) {
+            if (isProcessing) return;
+            isProcessing = true;
 
-            const allBtns = optionsEl.querySelectorAll('.btn-option');
-
-            if (selectedAns === correctAns) {
-                // Jawaban Benar
-                selectedBtn.classList.add('correct');
+            const buttons = document.querySelectorAll('.btn-option');
+            
+            if (value === correct) {
+                btn.classList.add('correct');
                 currentScore += 10;
-                scoreEl.innerText = currentScore;
+                document.getElementById('scoreVal').innerText = currentScore;
             } else {
-                // Jawaban Salah
-                selectedBtn.classList.add('wrong');
-                // Cari tombol yang benar untuk diberi tahu user
-                allBtns.forEach(btn => {
-                    if (btn.innerHTML === decodeHTML(correctAns)) {
-                        btn.classList.add('correct');
-                    }
+                btn.classList.add('wrong');
+                // Highlight yang benar
+                buttons.forEach(b => {
+                    if (parseInt(b.innerText) === correct) b.classList.add('correct');
                 });
             }
 
-            // Disable semua tombol
-            allBtns.forEach(btn => btn.disabled = true);
+            // Kunci semua tombol
+            buttons.forEach(b => b.disabled = true);
 
-            // Delay sebelum soal berikutnya
-            setTimeout(() => {
-                fetchQuestion();
-            }, 1500);
+            // Delay ke soal berikutnya
+            setTimeout(loadNewQuestion, 1200);
         }
 
-        // Mulai Kuis saat load
-        fetchQuestion();
+        // Init Game
+        loadNewQuestion();
 
-
-        /* --- 2. ANIMASI BACKGROUND (Sama seperti sebelumnya) --- */
+        /* --- 2. ANIMASI BACKGROUND (Visual Premium) --- */
         const canvas = document.getElementById('waveCanvas');
         const ctx = canvas.getContext('2d');
-        let width, height;
-        let waves = [];
-
-        const config = { waveCount: 3, speed: 0.002, amplitude: 80, frequency: 0.005 };
+        let width, height, waves = [];
 
         function resize() {
             width = canvas.width = window.innerWidth;
@@ -359,12 +358,12 @@
 
         function initWaves() {
             waves = [];
-            for (let i = 0; i < config.waveCount; i++) {
+            for (let i = 0; i < 4; i++) {
                 waves.push({
-                    y: height * 0.6 + (Math.random() * 200 - 100), 
+                    y: height * 0.5,
                     length: 0.003 + Math.random() * 0.005,
                     amplitude: 50 + Math.random() * 50,
-                    speed: 0.01 + Math.random() * 0.02,
+                    speed: 0.005 + Math.random() * 0.01,
                     offset: Math.random() * Math.PI * 2
                 });
             }
@@ -374,11 +373,11 @@
             ctx.clearRect(0, 0, width, height);
             waves.forEach((wave, index) => {
                 ctx.beginPath();
-                const alpha = 0.2 - (index * 0.05);
-                ctx.strokeStyle = `rgba(59, 130, 246, ${alpha})`;
-                ctx.lineWidth = 2;
+                const opacity = 0.1 + (index * 0.1);
+                ctx.strokeStyle = `rgba(59, 130, 246, ${opacity})`;
+                ctx.lineWidth = 1.5;
                 for (let x = 0; x < width; x++) {
-                    const y = wave.y + Math.sin(x * wave.length + wave.offset) * wave.amplitude;
+                    const y = wave.y + Math.sin(x * wave.length + wave.offset) * wave.amplitude * Math.sin(wave.offset * 0.5);
                     ctx.lineTo(x, y);
                 }
                 ctx.stroke();
