@@ -13,12 +13,11 @@
         /* --- VARIABEL & RESET --- */
         :root {
             /* Palette Biru Premium */
-            --color-bg-dark: #0B1120;       /* Deep Navy */
-            --color-primary: #1E3A8A;       /* Corporate Blue */
+            --color-bg-dark: #0B1120;       /* Deep Navy (Base Color) */
+            --color-bg-blue-premium: #1e40af; /* Premium Blue untuk gradasi */
             --color-accent: #3B82F6;        /* Bright Royal Blue */
             --color-text-main: #F8FAFC;     /* Off-white */
             --color-text-muted: #94A3B8;    /* Greyish blue */
-            --color-glass: rgba(15, 23, 42, 0.6); /* Lebih gelap untuk kontras canvas */
             
             --font-main: 'Inter', sans-serif;
             --max-width: 1280px;
@@ -32,6 +31,7 @@
 
         body {
             font-family: var(--font-main);
+            /* LAYER 1: Warna Dasar Paling Belakang */
             background-color: var(--color-bg-dark);
             color: var(--color-text-main);
             line-height: 1.6;
@@ -42,38 +42,46 @@
             position: relative;
         }
 
-        /* --- BACKGROUND CANVAS --- */
+        /* --- BACKGROUND SYSTEM --- */
+        
+        /* LAYER 2: Canvas Gelombang Trigonometri */
         #waveCanvas {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 0;
-            opacity: 0.4; /* Transparansi agar tidak mengganggu teks */
+            /* Z-index 0 menempatkannya di atas body, tapi di bawah overlay */
+            z-index: 0; 
+            opacity: 0.5; /* Disesuaikan agar menyatu dengan gradasi baru */
             pointer-events: none;
+            mix-blend-mode: screen; /* Membuat gelombang "menyala" di atas latar gelap */
         }
 
-        /* Gradient Overlay agar teks tetap terbaca di atas canvas */
+        /* LAYER 3: Premium Gradient Overlay */
         .bg-overlay {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at center, transparent 0%, var(--color-bg-dark) 90%);
-            z-index: 0;
+            /* Gradasi Premium Blue ke Dark, Menghilangkan efek lingkaran pusing */
+            background: linear-gradient(to bottom right, rgba(30, 64, 175, 0.8) 0%, rgba(11, 17, 32, 0.95) 70%);
+            /* Z-index 1 menempatkannya di ATAS kanvas gelombang */
+            z-index: 1;
             pointer-events: none;
         }
 
         /* --- LAYOUT UTAMA --- */
+        /* LAYER 4: Konten */
         .container {
             width: 100%;
             max-width: var(--max-width);
             margin: 0 auto;
             padding: 0 2rem;
             position: relative;
-            z-index: 2; /* Di atas canvas */
+            /* Z-index 2 memastikan konten di atas segalanya */
+            z-index: 2; 
             flex: 1;
             display: flex;
             flex-direction: column;
@@ -84,14 +92,7 @@
         header {
             padding: 2rem 0;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
         }
 
         .logo-icon {
@@ -105,7 +106,7 @@
         /* --- HERO SECTION --- */
         .hero {
             display: grid;
-            grid-template-columns: 1.1fr 0.9fr; /* Sedikit lebih lebar di kiri */
+            grid-template-columns: 1.1fr 0.9fr;
             gap: 4rem;
             align-items: center;
             padding: 4rem 0;
@@ -119,12 +120,12 @@
             display: inline-flex;
             align-items: center;
             padding: 0.5rem 1rem;
-            background: rgba(30, 58, 138, 0.2);
-            border: 1px solid rgba(59, 130, 246, 0.2);
+            background: rgba(30, 58, 138, 0.3);
+            border: 1px solid rgba(59, 130, 246, 0.3);
             border-radius: 9999px;
             font-size: 0.875rem;
             font-weight: 500;
-            color: #60A5FA;
+            color: #93C5FD;
             margin-bottom: 1.5rem;
             backdrop-filter: blur(8px);
         }
@@ -136,6 +137,13 @@
             border-radius: 50%;
             margin-right: 8px;
             box-shadow: 0 0 8px #60A5FA;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
         }
 
         h1 {
@@ -144,11 +152,8 @@
             font-weight: 700;
             letter-spacing: -0.03em;
             margin-bottom: 1.5rem;
-            /* Gradient teks yang lebih tajam */
-            background: linear-gradient(to right, #ffffff 20%, #93C5FD 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 40px rgba(147, 197, 253, 0.1);
+            color: #ffffff;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
 
         p.lead {
@@ -168,13 +173,12 @@
 
         .input-group {
             flex: 1;
-            position: relative;
         }
 
         input[type="email"] {
             width: 100%;
             padding: 1rem 1.25rem;
-            background: rgba(11, 17, 32, 0.6);
+            background: rgba(11, 17, 32, 0.5);
             border: 1px solid rgba(255, 255, 255, 0.15);
             border-radius: 8px;
             color: white;
@@ -188,12 +192,11 @@
             outline: none;
             border-color: var(--color-accent);
             background: rgba(11, 17, 32, 0.8);
-            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
         }
 
         button.btn-primary {
             padding: 0 2rem;
-            background: var(--color-accent);
             background: linear-gradient(180deg, #3B82F6 0%, #2563EB 100%);
             color: white;
             border: 1px solid #2563EB;
@@ -201,14 +204,14 @@
             font-weight: 600;
             font-size: 1rem;
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: all 0.2s;
             white-space: nowrap;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
 
         button.btn-primary:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.4);
         }
 
         .privacy-note {
@@ -221,28 +224,20 @@
         .visual-placeholder {
             position: relative;
             height: 450px;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+            /* Latar belakang card dibuat lebih transparan agar menyatu dengan background baru */
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
             border-radius: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(12px); /* Efek kaca frosted */
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
         }
 
-        /* Ikon Abstrak di dalam Card */
         .icon-wrapper {
-            position: relative;
-            z-index: 2;
             color: white;
-            animation: pulse-glow 3s infinite ease-in-out;
-        }
-
-        @keyframes pulse-glow {
-            0%, 100% { opacity: 0.8; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.05); }
+            opacity: 0.9;
         }
 
         /* --- FOOTER --- */
@@ -250,7 +245,6 @@
             position: relative;
             z-index: 2;
             padding: 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
             text-align: center;
             font-size: 0.875rem;
             color: #64748B;
@@ -273,13 +267,12 @@
 <body>
 
     <canvas id="waveCanvas"></canvas>
+    
     <div class="bg-overlay"></div>
 
     <div class="container">
         <header>
-            <div class="logo">
-                <div class="logo-icon"></div>
-                </div>
+            <div class="logo-icon"></div>
         </header>
 
         <main class="hero">
@@ -304,10 +297,12 @@
 
             <div class="visual-placeholder">
                 <div class="icon-wrapper">
-                   <svg width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"></path>
-                        <path d="M12 12v9"></path>
-                        <path d="m16 16-4-4-4 4"></path>
+                   <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
+                        <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
+                        <line x1="6" y1="6" x2="6.01" y2="6"></line>
+                        <line x1="6" y1="18" x2="6.01" y2="18"></line>
+                        <path d="M12 12v2" stroke-opacity="0.5"></path>
                     </svg>
                 </div>
             </div>
@@ -325,12 +320,11 @@
         let width, height;
         let waves = [];
 
-        // Konfigurasi Gelombang
         const config = {
-            waveCount: 5,        // Jumlah lapisan gelombang
-            speed: 0.005,        // Kecepatan gerakan
-            amplitude: 50,       // Tinggi gelombang dasar
-            frequency: 0.01      // Kerapatan gelombang
+            waveCount: 4,        // Jumlah gelombang dikurangi sedikit agar lebih elegan
+            speed: 0.003,        // Kecepatan diperlambat
+            amplitude: 60,
+            frequency: 0.008
         };
 
         function resize() {
@@ -342,34 +336,30 @@
             waves = [];
             for (let i = 0; i < config.waveCount; i++) {
                 waves.push({
-                    y: height / 2 + (Math.random() * 200 - 100), // Posisi Y acak di tengah
-                    length: 0.005 + Math.random() * 0.01,        // Frekuensi unik
-                    amplitude: 30 + Math.random() * 80,          // Amplitudo unik
-                    speed: 0.02 + Math.random() * 0.04,          // Kecepatan unik
-                    offset: Math.random() * Math.PI * 2          // Fase awal unik
+                    y: height / 2 + (Math.random() * 300 - 150), 
+                    length: 0.004 + Math.random() * 0.008,
+                    amplitude: 40 + Math.random() * 80,
+                    speed: 0.015 + Math.random() * 0.03,
+                    offset: Math.random() * Math.PI * 2
                 });
             }
         }
 
         function draw() {
-            // Hapus canvas dengan efek trail (opsional), di sini clear total
             ctx.clearRect(0, 0, width, height);
 
-            // Loop setiap gelombang
             waves.forEach((wave, index) => {
                 ctx.beginPath();
                 
-                // Warna biru premium dengan transparansi bertingkat
-                // Gelombang belakang lebih transparan, depan lebih jelas
-                const opacity = 0.05 + (index / config.waveCount) * 0.15; 
-                ctx.strokeStyle = `rgba(59, 130, 246, ${opacity})`; 
-                ctx.lineWidth = 2;
+                // Opasitas garis disesuaikan agar tidak terlalu dominan di bawah overlay baru
+                const opacity = 0.1 + (index / config.waveCount) * 0.25; 
+                ctx.strokeStyle = `rgba(96, 165, 250, ${opacity})`; // Menggunakan biru yang lebih terang (sky blue) agar terlihat
+                ctx.lineWidth = 1.5;
 
                 for (let x = 0; x < width; x++) {
-                    // Rumus Trigonometri: y = Center + Amplitude * sin(x * frequency + phase)
-                    // Kita gabungkan sin dan cos untuk variasi
+                    // Kombinasi Sin dan Cos untuk gerakan yang lebih organik
                     const y = wave.y + 
-                              Math.sin(x * wave.length + wave.offset) * wave.amplitude * Math.sin(wave.offset);
+                              Math.sin(x * wave.length + wave.offset) * wave.amplitude * Math.cos(wave.offset * 0.5);
 
                     if (x === 0) {
                         ctx.moveTo(x, y);
@@ -377,23 +367,18 @@
                         ctx.lineTo(x, y);
                     }
                 }
-                
                 ctx.stroke();
-                
-                // Update fase untuk animasi
-                wave.offset += wave.speed * 0.5;
+                wave.offset += wave.speed * 0.8;
             });
 
             requestAnimationFrame(draw);
         }
 
-        // Event Listeners
         window.addEventListener('resize', () => {
             resize();
             initWaves();
         });
 
-        // Start
         resize();
         initWaves();
         draw();
